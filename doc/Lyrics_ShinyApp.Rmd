@@ -364,7 +364,7 @@ rownames(emotion_summary) = c("Hip-Hop","Rock")
 
 ```
 
-###plot the emotions of the tweo genres:
+###plot the emotions of the two genres:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 par(mfrow = c(1,1))
 barplot(emotion_summary,beside=T,col=rainbow(2),main="Average Sentiment Distributions of Each Genre of Music", xlab="8 Types of Emotions", ylab="The Relative Strengh of that Emotion")
