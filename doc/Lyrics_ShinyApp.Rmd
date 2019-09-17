@@ -1,13 +1,14 @@
 ---
-title: "Lyrics ShinyApp"
+title: "Rock vs. Hip-Hop : Why Rock music loses the ground in the 21st century?"
 author: "Lihao Xiao"
 output: html_document
 ---
 
 
-# Rock vs. Hip-Hop : Why Rock music loses the ground in the 21st century?
+![ ](../figs/rockvshp.jpg) 
+pic reference: http://www.gynesisradio.com/tfgrs/2018/01/06/hip-hop-vs-rock-2/
 
-### Data information:
+## Data information:
 "lyrics_filter.csv" is a filtered corpus of 380,000+ song lyrics from from MetroLyrics. You can read more about it on [Kaggle](https://www.kaggle.com/gyani95/380000-lyrics-from-metrolyrics).
 
 "info_artist.csv" provides the background information of all the artistis. These information are scraped from [LyricsFreak](https://www.lyricsfreak.com/).
@@ -62,7 +63,7 @@ load('../output/processed_lyrics.RData')
 lyrics_list <- c("Folk", "R&B", "Electronic", "Jazz", "Indie", "Country", "Rock", "Metal", "Pop", "Hip-Hop", "Other")
 ```
 
-##Part 1: The overview of the songs production from 1970s to 2016
+#Part 1: The overview of the songs production from 1970s to 2016
 
 The trend of songs is comstantly changing over time period. The genre of songs and the lyrics can reflect the preference and even  the structure of the society. Here we have a dataset with songs of different generes with lyrics and its publication date. 
 
@@ -95,7 +96,7 @@ songs_counting <- function (times){
 ```
 
 
-####Music Popularity in absolute numbers from 1970 to 2016:
+###Music Popularity in absolute numbers from 1970 to 2016:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 times =  seq(1970,2016,1)
 count_matrix = songs_counting(times)
@@ -111,7 +112,7 @@ From this plot, we can see that except from the 2006/2007 when there is a abnorm
 Because of a potential problem that the data collected can not be evenly, so the absolute number for each year just gives a general image of how it is possible to start. Here becuase of the interesting findings for rock and hip-hop, we calculate the Proposion of Rock and Hip-Pop Music Data changing from 1970 to 2016.
 
 
-####The Proposion of Rock and Hip-Pop Music Data changing from 1970 to 2016: 
+###The Proposion of Rock and Hip-Pop Music Data changing from 1970 to 2016: 
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 par(mfrow = c(1,2))
 plot(times,count_matrix[10,]/colSums(count_matrix),type='l',col="red",
@@ -127,7 +128,7 @@ plot(times,count_matrix[7,]/colSums(count_matrix),type='l',col="blue",
 More interestingly, although the amount of rock music is large, the propotion of rock music is roughly decreasing from 1970 to 2016. On the contrary, the percentage of hip-hop has a ascending trend. So here comes an interesting question, what are the reasons for rock losing its grounds in the 21st century?
 
 
-## Part2: Reasons for the popularity of hip-hop:
+# Part 2: Reasons for the popularity of hip-hop:
 
 We divide the reasons into 4 parts:
 
@@ -137,9 +138,9 @@ We divide the reasons into 4 parts:
 4. the mood that the two genres present: sentiment analysis
 
 
-###words length:
+##words length:
 
-####Average word length for Hip-Hop and Rock music:
+###Average word length for Hip-Hop and Rock music:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 hip_hop_lyrics = dt_lyrics[dt_lyrics['genre']=='Hip-Hop',]$lyrics[1:1000]
 #replacing \n with full stops in the raw lyrics
@@ -187,11 +188,11 @@ beeswarm(rock_average_length,
          main="Rock song Length Analysis")
 ```
 
-####Examples:
+###Examples:
 
 Here are some examples of the first three songs from the Hip-Hop and Rock music genre and we are going to look at what exactly are these lyrics.
 
-#####Hip-Hop examples:
+####Hip-Hop examples:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 for (i in 1:2){
   print("Example of hip-hop songs")
@@ -203,7 +204,7 @@ for (i in 1:2){
 
 ```
 
-#####Rock examples:
+####Rock examples:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 for (i in 1:2){
   print("Example of rock songs")
@@ -218,7 +219,7 @@ From this section, we can see that rock songs have shorter sentences on average 
 
 
 
-###Topic Modelling:
+##Topic Modelling:
 
 Here, we discuss what topics are most relavant in each genre.
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
@@ -261,7 +262,7 @@ topic_modeling <- function(data){
 
 ```
 
-####Hip-hop topics for the lyrics of 500 songs:
+###Hip-hop topics for the lyrics of 500 songs:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 # hip-hop topics:
 hip_hop_data = dt_lyrics[dt_lyrics['genre'] =='Hip-Hop',]
@@ -269,7 +270,7 @@ print("The summary of the topic modeling results of Hip_Hop Music")
 topic_modeling(hip_hop_data)
 ```
 
-####Rock topics for the lyrics of 500 songs:
+###Rock topics for the lyrics of 500 songs:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 #rock topics:
 rock_data = dt_lyrics[dt_lyrics['genre'] =='Rock',]
@@ -282,7 +283,7 @@ By reading the key words of topics that each genre covers, we can have a basic i
 But for rock music, the topcis concentrate more on love relationship and hate or death, which is quite old fashioned and attracts less than the hip-hop.
 
 
-###The word cloud analysis: 
+##The word cloud analysis: 
 
 Apart from the topics, we also pick the most frequent words that each genre uses. The result is displayed in the shiny app.
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
@@ -295,7 +296,7 @@ word_tibble <- tidy(corpus) %>%
   unnest_tokens(word, text)
 ```
 
-#### Words Cloud of Rock music
+### Words Cloud of Rock music
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 rock_count = count(filter(word_tibble, id %in% which(dt_lyrics$genre == "Rock")), word, sort = TRUE)
 wordcloud(rock_count$word,rock_count$n ,
@@ -309,7 +310,7 @@ wordcloud(rock_count$word,rock_count$n ,
           colors=brewer.pal(9,"Blues"))
 ```
 
-#### Words Cloud of Hip-Hop music
+### Words Cloud of Hip-Hop music
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 hip_hop_count = count(filter(word_tibble, id %in% which(dt_lyrics$genre == "Hip-Hop")), word, sort = TRUE)
 wordcloud(hip_hop_count$word,hip_hop_count$n ,
@@ -328,7 +329,7 @@ Similar to the topics modelling, hip-hop gives a more direct and strong personal
 
 
 
-###sentiment analysis: 
+##sentiment analysis: 
 
 Here, we do sentiment analysis on the stemmed words on the lyrics of 1000 songs for each hip-hop and rock music and we want to have a general idea of what emotions that these songs are  conveying. 
 
@@ -363,7 +364,7 @@ rownames(emotion_summary) = c("Hip-Hop","Rock")
 
 ```
 
-####plot the emotions of the tweo genres:
+###plot the emotions of the tweo genres:
 ```{r,warning=FALSE, message=FALSE,echo=FALSE}
 par(mfrow = c(1,1))
 barplot(emotion_summary,beside=T,col=rainbow(2),main="Average Sentiment Distributions of Each Genre of Music", xlab="8 Types of Emotions", ylab="The Relative Strengh of that Emotion")
@@ -373,7 +374,11 @@ legend("topright", legend = c("Hip-Hop","Rock"), fill=rainbow(2),cex = 0.4)
 From the barplot, we can see that these two types of music have absolutely different emotions. Hip-hop music has more anticipation, trust, fear and sadness. Whereas, Rock music has more joy, suprise, anger and disgust. We can roughly imply from the graph that in the 21st century, trust and the motivation for the future is what people are seeking for. For negative feelings like fear and saadness, becuase these emotions are more touching because it is in a vulnerable position than anger and disgust. Thus,we can get that the society cares about monority and take their fear and sadness into consideration. Espeically, given the background like Black Lives Matter and LGBTQ rights, we can know that Hip-hop speaks for them and thus wins. 
 
 
-##Part3:Conclusion:
+# Part 3: Conclusion:
+
+![ ](../figs/award.jpg) 
+pic reference: https://www.vibe.com/2019/02/grammy-awards-2019-hip-hop-rb-winners-list
+
 1. the amount of rock music is large, the propotion of rock music is roughly decreasing from 1970 to 2016. On the contrary, the percentage of hip-hop has a ascending trend. 
 2. rock songs have shorter sentences on average and hip-hop has longer ones, hip-hop music has lyrics that tell you something meaningful but rock have redundent repeatitions.
 3. hip-hop gives a more direct and strong personality in its music. Hip-hop uses many mimetic words to improve the rhythem of songs and make them catchy.
